@@ -1,0 +1,4 @@
+# puppetjenkins
+class puppetjenkins {
+
+}

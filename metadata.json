@@ -1,0 +1,14 @@
+{
+  "name": "puppetjenkins",
+  "version": "0.1.0",
+  "author": "nik.ogura@gmail.com",
+  "summary": "Just enough Puppet code to create a Jenkins instance that can sync itself to and from VCS",
+  "license": "Apache-2.0",
+  "source": "https://github.com/nikogura/puppetjenkins",
+  "project_page": "https://github.com/nikogura/puppetjenkins",
+  "issues_url": "https://github.com/nikogura/puppetjenkins/issues",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+  ]
+}
+
