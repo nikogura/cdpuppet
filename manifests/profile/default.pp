@@ -1,15 +1,6 @@
 # puppetjenkins::profile::default
 class puppetjenkins::profile::default {
-
   package {'git':
-    ensure => installed,
-  }
-
-  package {'nodejs':
-    ensure => installed,
-  }
-
-  package {'npm':
     ensure => installed,
   }
 
