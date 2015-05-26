@@ -6,6 +6,9 @@ class puppetjenkins::profile::default {
 
   $plugins = [
     'scm-sync-configuration',
+    'scm-api',
+    'credentials',
+    'ssh-credentials',
     'git-client',
     'github',
     'git',
