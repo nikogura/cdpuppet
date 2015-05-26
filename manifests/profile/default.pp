@@ -22,9 +22,13 @@ class puppetjenkins::profile::default {
     gpgcheck => 0,
   }
 
+  package {'perl-Git':
+    ensure => latest,
+  }
+
   package {'git':
     ensure => latest,
-    require => Yumrepo[$rpmforgeExtra],
+    require => [Yumrepo[$rpmforgeExtra], Package['perl-Git']],
   }
 
   $plugins = [
