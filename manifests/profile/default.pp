@@ -41,6 +41,7 @@ class puppetjenkins::profile::default {
     'github-api',
     'github',
     'greenballs',
+    'publish-over-ssh',
   ]
 
   #include jenkins
