@@ -1,0 +1,9 @@
+---
+:backends:
+  - json
+:hierarchy:
+  - datagroup/puppetjenkins
+  - global
+
+:json:
+  :datadir: /etc/puppet/environments/%{::environment}/hiera

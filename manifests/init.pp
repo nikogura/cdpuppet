@@ -1,4 +1,3 @@
 # puppetjenkins
 class puppetjenkins {
-
 }

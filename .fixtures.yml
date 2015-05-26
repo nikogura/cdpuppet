@@ -1,0 +1,15 @@
+fixtures:
+  repositories:
+    jenkins:
+      repo: 'git@github.com:jenkinsci/puppet-jenkins.git'
+      ref: 'v1.3.0'
+
+    java:
+      repo: 'git@github.com:puppetlabs/puppetlabs-java.git'
+      ref: '1.3.0'
+
+  forge_modules:
+    network: "razorsedge/network"
+    stdlib: "puppetlabs/stdlib"
+  symlinks:
+    puppetjenkins: "#{source_dir}"

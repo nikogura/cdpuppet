@@ -30,3 +30,10 @@ mod 'java',
     :git => 'git@github.com:puppetlabs/puppetlabs-java.git',
     :ref => '1.3.0'
 
+mod 'puppetlabs-firewall',
+    :git => 'git@github.com:puppetlabs/puppetlabs-firewall.git',
+    :ref => '1.6.0'
+
+mod 'selinux',
+    :git => 'git@github.com:spiette/puppet-selinux.git',
+    :ref => 'v0.5.3'
