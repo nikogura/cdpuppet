@@ -5,6 +5,9 @@ class cdpuppet::profile::puppetmaster (
   $run_group = 'root',
 
 ){
+  # removes an annoying yum warning that junks up logs
+  Package { allow_virtual => true, }
+
   $puppet_bin = "${puppet_home}/bin"
 
   $scripts = [
@@ -51,6 +54,13 @@ class cdpuppet::profile::puppetmaster (
     content => "puppet:///modules/cdpuppet/r10k.yaml",
     owner   => $run_user,
     group   => $run_group,
+  }
+
+  file {'/etc/hiera.yaml':
+    ensure  => link,
+    target  => "$puppet_home/hiera.yaml",
+    require => File["$puppet_home/hiera.yaml"],
+
   }
 
   firewall { '100 allow puppet agent access':

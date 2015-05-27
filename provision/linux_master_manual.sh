@@ -99,6 +99,7 @@ else
   #yum --nogpgcheck -y install ruby193
 
   gem install r10k
+  #gem install system_timer
 
   # setting up autosigning
   echo "*.local" > ${puppetConfigDir}/autosign.conf

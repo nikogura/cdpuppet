@@ -42,10 +42,6 @@ puppetConfigDir="/etc/puppet"
 if ls /etc/init.d/puppetmaster > /dev/null 2>&1; then
   echo 'Puppet Already Installed. Syncing Environments.'
 
-  ln -sf /vagrant/files/r10k.yaml /etc/r10k.yaml
-
-  ln -sf /vagrant/files/puppet.conf /etc/puppet/puppet.conf
-
   r10k deploy environment -v
 
   # this shouldnt be necessary, but it seems to be
@@ -66,11 +62,12 @@ else
   #yum --nogpgcheck -y install ruby193
 
   gem install r10k
+  #gem install system_timer
 
-  ln -sf /vagrant/files/r10k.yaml /etc/r10k.yaml
-
-  rm ${puppetConfigDir}/puppet.conf
-  ln -sf /vagrant/files/puppet.conf /etc/puppet/puppet.conf
+  # have to get these into place manually before running puppet
+  cp /vagrant/files/r10k.yaml /etc/r10k.yaml
+  cp /vagrant/files/puppet.conf /etc/puppet/puppet.conf
+  cp /vagrant/files/hiera.yaml /etc/puppet/hiera.yaml
 
   echo 'Populating Envrionments'
 

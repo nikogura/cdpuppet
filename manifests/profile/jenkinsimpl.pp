@@ -1,5 +1,8 @@
 # cdpuppet::profile::jenkinsimpl   Can't call it 'jenkins', as there's a 'jenkins' class inside it and it causes a collision
 class cdpuppet::profile::jenkinsimpl {
+  # removes an annoying yum warning that junks up logs
+  Package { allow_virtual => true, }
+
   $epel = 'epel'
   $rpmforge = 'rpmforge'
   $rpmforgeExtra = 'rpmforge-extras'
