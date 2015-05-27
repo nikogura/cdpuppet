@@ -17,17 +17,17 @@ boxes = [
         :memory => boxMemory,
         :box => 'puppetlabs/centos-6.6-64-puppet',
 
-        # crude manually setup puppet master
+        # crude manually setup puppet master.  Crude, but effective.
         #:provisioner => 'linux_master_manual.sh',
         #:provisionArgs => "-m #{app} -t #{confType} -e production" ,
 
         # puppet master set up via puppet itself.  No automatic syncing
         #:provisioner => 'linux_master_puppet.sh',
-        #:provisionArgs => "-m #{app} -t #{confType} -e production -r 'cdpuppet::role::puppetmaster'" ,
+        #:provisionArgs => "-t #{confType} -e production -r 'cdpuppet::role::puppetmaster'" ,
 
         # puppet master set up via puppet itself.  Synced to Control Repo via Cron
         :provisioner => 'linux_master_puppet.sh',
-        :provisionArgs => "-m #{app} -t #{confType} -e production -r 'cdpuppet::role::puppetmaster::cron'" ,
+        :provisionArgs => "-t #{confType} -e production -r 'cdpuppet::role::puppetmaster::cron'" ,
 
         # puppet master set up via puppet itself.  Synced to Control Repo via Jenkins
         #:provisioner => 'linux_master_puppet.sh',
@@ -39,7 +39,7 @@ boxes = [
         #:provisioner => 'linux_masterless.sh',
         #:provisionArgs => "-m #{app} -t #{confType} -e production" ,
         :provisioner => 'linux_agent.sh',
-        :provisionArgs => "-m #{app} -t #{confType} -e production -r 'cdpuppet::role::jenkins'",
+        :provisionArgs => "-t #{confType} -e production -r 'cdpuppet::role::jenkins'",
         :box => 'puppetlabs/centos-6.6-64-puppet',
         :guestport => 8080,
         :hostport  => 8080,
@@ -50,7 +50,7 @@ boxes = [
         #:provisioner => 'linux_masterless.sh',
         #:provisionArgs => "-m #{app} -t #{confType} -e production" ,
         :provisioner => 'linux_agent.sh',
-        :provisionArgs => "-m #{app} -t #{confType} -e production -r 'cdpuppet::role::apachedemo'",
+        :provisionArgs => "-t #{confType} -e production -r 'cdpuppet::role::apachedemo'",
         :box => 'puppetlabs/centos-6.6-64-puppet',
         :guestport => 80,
         :hostport  => 8081,

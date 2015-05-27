@@ -7,10 +7,6 @@ while [ $# -ge 1 ]; do
             shift
             break
             ;;
-        -m)
-            moduleName="$2"
-            shift
-            ;;
         -n)
             nodeName="$2"
             shift
@@ -37,7 +33,7 @@ while [ $# -ge 1 ]; do
 
 done
 
-puppetConfigDir="/etc/puppet"
+puppet_home="/etc/puppet"
 
 if ls /etc/init.d/puppetmaster > /dev/null 2>&1; then
   echo 'Puppet Already Installed. Syncing Environments.'
@@ -45,7 +41,7 @@ if ls /etc/init.d/puppetmaster > /dev/null 2>&1; then
   r10k deploy environment -v
 
   # this shouldnt be necessary, but it seems to be
-  cd ${puppetConfigDir}/environments/production
+  cd ${puppet_home}/environments/production
   r10k puppetfile install
 
   echo "Provisioning Myself"
@@ -65,16 +61,16 @@ else
   #gem install system_timer
 
   # have to get these into place manually before running puppet
-  cp /vagrant/files/r10k.yaml /etc/r10k.yaml
-  cp /vagrant/files/puppet.conf /etc/puppet/puppet.conf
-  cp /vagrant/files/hiera.yaml /etc/puppet/hiera.yaml
+  cp /vagrant/files/conf/r10k.yaml /etc/r10k.yaml
+  cp /vagrant/files/conf/puppet.conf /etc/puppet/puppet.conf
+  cp /vagrant/files/conf/hiera.yaml /etc/puppet/hiera.yaml
 
   echo 'Populating Envrionments'
 
   r10k deploy environment -v
 
   # this shouldnt be necessary, but it seems to be
-  cd ${puppetConfigDir}/environments/production
+  cd ${puppet_home}/environments/production
   r10k puppetfile install
 
   echo 'Provisioning Myself'

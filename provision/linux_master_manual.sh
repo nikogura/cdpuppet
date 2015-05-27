@@ -34,52 +34,27 @@ while [ $# -ge 1 ]; do
 done
 
 # some global variables
-puppetConfigDir="/etc/puppet"
-environmentPath="${puppetConfigDir}/environments"
+puppet_home="/etc/puppet"
+environmentPath="${puppet_home}/environments"
 vagrantHome="/home/vagrant"
 
 # hiera configs
 mkdir -p ${environmentPath}/${environment}/hiera
 
-hiera_config="${puppetConfigDir}/hiera.yaml"
+ln -sf /vagrant/files/conf/hiera.yaml "${puppet_home}/hiera.yaml"
 
-if [ -e  ${hiera_config} ] ; then
-    :
-else
-    ln -s /vagrant/files/hiera.yaml "${puppetConfigDir}/hiera.yaml"
-fi
+ln -sf ${puppet_home}/hiera.yaml /etc/hiera.yaml
 
-if [ -L /etc/hiera.yaml ] ; then
-    :
-elif [ -f /etc/hiera.yaml ] ; then
-    rm -f /etc/hiera.yaml
-    ln -s ${puppetConfigDir}/hiera.yaml /etc/hiera.yaml
-else
-    ln -s ${puppetConfigDir}/hiera.yaml /etc/hiera.yaml
-fi
+ln -sf /vagrant/hiera/global.${confType} ${environmentPath}/${environment}/hiera/global.${confType}
 
-if [ -e   ${environmentPath}/${environment}/hiera/global.${confType} ] ; then
-    :
-else
-    ln -sf /vagrant/hiera/global.${confType} ${environmentPath}/${environment}/hiera/global.${confType}
-fi
-
-if [ -e  ${environmentPath}/${environment}/hiera/datagroup/${moduleName}.${confType} ] ; then
-    :
-else
-    mkdir -p ${environmentPath}/${environment}/hiera/datagroup
-    ln -sf /vagrant/hiera/datagroup/${environment}.${confType} ${environmentPath}/${environment}/hiera/datagroup/${moduleName}.${confType}
-fi
+mkdir -p ${environmentPath}/${environment}/hiera/datagroup
+ln -sf /vagrant/hiera/datagroup/${environment}.${confType} ${environmentPath}/${environment}/hiera/datagroup/${moduleName}.${confType}
 
 mkdir -p ${vagrantHome}/modules
 
 modLink="${vagrantHome}/modules/${moduleName}"
 
-if [ -e ${modLink} ] ; then
-    :
-else
-    ln -s /vagrant ${modLink}
-fi
+ln -sf /vagrant ${modLink}
 
 modulePath="${environmentPath}:/home/vagrant/modules:/vagrant/modules"
 
@@ -89,7 +64,7 @@ if ls /etc/init.d/puppetmaster > /dev/null 2>&1; then
   r10k deploy environment -v
 
   # this shouldnt be necessary, but it seems to be
-  cd ${puppetConfigDir}/environments/production
+  cd ${puppet_home}/environments/production
   r10k puppetfile install
 
 else
@@ -102,24 +77,24 @@ else
   #gem install system_timer
 
   # setting up autosigning
-  echo "*.local" > ${puppetConfigDir}/autosign.conf
+  echo "*.local" > ${puppet_home}/autosign.conf
 
   # config files
 
-  rm -f ${puppetConfigDir}/puppet.conf
-  ln -sf /vagrant/files/puppet.conf ${puppetConfigDir}/puppet.conf
+  rm -f ${puppet_home}/puppet.conf
+  ln -sf /vagrant/files/conf/puppet.conf ${puppet_home}/puppet.conf
 
-  mkdir -p ${puppetConfigDir}/bin
+  mkdir -p ${puppet_home}/bin
 
-  ln -sf /vagrant/files/deploy_environment.sh ${puppetConfigDir}/bin
-  ln -sf /vagrant/files/update_master.sh ${puppetConfigDir}/bin
-  ln -sf /vagrant/files/r10k_postrun.rb ${puppetConfigDir}/bin
+  ln -sf /vagrant/files/script/deploy_environment.sh ${puppet_home}/bin
+  ln -sf /vagrant/files/script/update_master.sh ${puppet_home}/bin
+  ln -sf /vagrant/files/script/r10k_postrun.rb ${puppet_home}/bin
 
-  ln -sf /vagrant/files/hiera.yaml ${puppetConfigDir}/hiera.yaml
-  #ln -sf /vagrant/files/puppetdb.conf ${puppetConfigDir}/puppetdb.conf
-  #ln -sf /vagrant/files/routes.yaml ${puppetConfigDir}/routes.yaml
+  ln -sf /vagrant/files/conf/hiera.yaml ${puppet_home}/hiera.yaml
+  #ln -sf /vagrant/files/conf/puppetdb.conf ${puppet_home}/puppetdb.conf
+  #ln -sf /vagrant/files/conf/routes.yaml ${puppet_home}/routes.yaml
 
-  ln -sf /vagrant/files/r10k.yaml /etc/r10k.yaml
+  ln -sf /vagrant/files/conf/r10k.yaml /etc/r10k.yaml
   ln -sf /vagrant/Puppetfile /etc/puppet/Puppetfile
 
   rm /etc/hiera.yaml
@@ -132,7 +107,7 @@ else
   r10k deploy environment -v
 
   # this shouldnt be necessary, but it seems to be
-  cd ${puppetConfigDir}/environments/production
+  cd ${puppet_home}/environments/production
   r10k puppetfile install
 
   # Crudely disable iptables

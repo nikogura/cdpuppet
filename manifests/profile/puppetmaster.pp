@@ -16,6 +16,11 @@ class cdpuppet::profile::puppetmaster (
     'r10k_postrun.rb',
   ]
 
+  $puppet_confs = [
+    'hiera.yaml',
+    'puppet.conf',
+  ]
+
   file {$puppet_home:
     ensure => directory,
   }
@@ -31,27 +36,10 @@ class cdpuppet::profile::puppetmaster (
 
   }
 
-  cdpuppet::file {$scripts:
-    target_dir => $puppet_bin,
-    run_user   => $run_user,
-    run_group  => $run_group,
-    mode       => 0755,
-  }
-
-  $puppet_confs = [
-    'hiera.yaml',
-    'puppet.conf',
-  ]
-
-  cdpuppet::file {$puppet_confs:
-    target_dir => $puppet_home,
-
-  }
-
   file {'/etc/r10k.yaml':
     ensure  => present,
     mode    => 0644,
-    source  => "puppet:///modules/cdpuppet/r10k.yaml",
+    source  => "puppet:///modules/cdpuppet/conf/r10k.yaml",
     owner   => $run_user,
     group   => $run_group,
   }
@@ -60,6 +48,20 @@ class cdpuppet::profile::puppetmaster (
     ensure  => link,
     target  => "$puppet_home/hiera.yaml",
     require => File["$puppet_home/hiera.yaml"],
+
+  }
+
+  cdpuppet::file {$scripts:
+    target_dir => $puppet_bin,
+    run_user   => $run_user,
+    run_group  => $run_group,
+    mode       => 0755,
+    type       => 'script',
+  }
+
+  cdpuppet::file {$puppet_confs:
+    target_dir => $puppet_home,
+    type => 'conf',
 
   }
 
@@ -117,6 +119,7 @@ class cdpuppet::profile::puppetmaster (
 
   define cdpuppet::file (
     $target_dir,
+    $type,
     $mode = 0644,
     $run_user = root,
     $run_group = root,
@@ -125,7 +128,7 @@ class cdpuppet::profile::puppetmaster (
     file {"$target_dir/$name":
       ensure  => present,
       mode    => $mode,
-      source  => "puppet:///modules/cdpuppet/${name}",
+      source  => "puppet:///modules/cdpuppet/${type}/${name}",
       owner   => $run_user,
       group   => $run_group,
       require => File[$target_dir],

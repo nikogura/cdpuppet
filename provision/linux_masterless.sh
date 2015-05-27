@@ -34,8 +34,8 @@ while [ $# -ge 1 ]; do
 done
 
 # some global variables
-puppetConfigDir="/etc/puppet"
-environmentPath="${puppetConfigDir}/environments"
+puppet_home="/etc/puppet"
+environmentPath="${puppet_home}/environments"
 vagrantHome="/home/vagrant"
 
 # hiera configs
@@ -43,33 +43,17 @@ mkdir -p ${environmentPath}/${environment}/hiera
 
 hiera_config="${puppetConfigDir}/hiera.yaml"
 
-if [ -e  ${hiera_config} ] ; then
-    :
-else
-    ln -sf /vagrant/files/hiera.yaml "${puppetConfigDir}/hiera.yaml"
-fi
+ln -sf /vagrant/files/conf/hiera.yaml "${puppet_home}/hiera.yaml"
 
-if [ -L /etc/hiera.yaml ] ; then
-    :
-elif [ -f /etc/hiera.yaml ] ; then
-    rm -f /etc/hiera.yaml
-    ln -s ${puppetConfigDir}/hiera.yaml /etc/hiera.yaml
-else
-    ln -s ${puppetConfigDir}/hiera.yaml /etc/hiera.yaml
-fi
+# lets have puppet and the command line use the same config shall we?
+ln -sf ${puppet_home}/hiera.yaml /etc/hiera.yaml
 
-if [ -e   ${environmentPath}/${environment}/hiera/global.${confType} ] ; then
-    :
-else
-    ln -sf /vagrant/hiera/global.${confType} ${environmentPath}/${environment}/hiera/global.${confType}
-fi
+#global hiera config
+ln -sf /vagrant/hiera/global.${confType} ${environmentPath}/${environment}/hiera/global.${confType}
 
-if [ -e  ${environmentPath}/${environment}/hiera/datagroup/${moduleName}.${confType} ] ; then
-    :
-else
-    mkdir -p ${environmentPath}/${environment}/hiera/datagroup
-    ln -sf /vagrant/hiera/datagroup/${environment}.${confType} ${environmentPath}/${environment}/hiera/datagroup/${moduleName}.${confType}
-fi
+#per group hiera config
+mkdir -p ${environmentPath}/${environment}/hiera/datagroup
+ln -sf /vagrant/hiera/datagroup/${environment}.${confType} ${environmentPath}/${environment}/hiera/datagroup/${moduleName}.${confType}
 
 echo "Provisioning with linux_masterless.sh"
 echo "Module: ${moduleName}"
@@ -83,7 +67,6 @@ if [ -e ${modLink} ] ; then
 else
     ln -s /vagrant ${modLink}
 fi
-
 
 modulePath="${environmentPath}:/home/vagrant/modules:/vagrant/modules"
 

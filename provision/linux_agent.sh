@@ -7,10 +7,6 @@ while [ $# -ge 1 ]; do
             shift
             break
             ;;
-        -m)
-            moduleName="$2"
-            shift
-            ;;
         -n)
             nodeName="$2"
             shift
@@ -38,54 +34,12 @@ while [ $# -ge 1 ]; do
 done
 
 # some global variables
-puppetConfigDir="/etc/puppet"
-environmentPath="${puppetConfigDir}/environments"
+puppet_home="/etc/puppet"
+environmentPath="${puppet_home}/environments"
 vagrantHome="/home/vagrant"
 
 # hiera configs
 mkdir -p ${environmentPath}/${environment}/hiera
-
-hiera_config="${puppetConfigDir}/hiera.yaml"
-
-if [ -e  ${hiera_config} ] ; then
-    :
-else
-    ln -s /vagrant/files/hiera.yaml "${puppetConfigDir}/hiera.yaml"
-fi
-
-if [ -L /etc/hiera.yaml ] ; then
-    :
-elif [ -f /etc/hiera.yaml ] ; then
-    rm -f /etc/hiera.yaml
-    ln -s ${puppetConfigDir}/hiera.yaml /etc/hiera.yaml
-else
-    ln -s ${puppetConfigDir}/hiera.yaml /etc/hiera.yaml
-fi
-
-if [ -e   ${environmentPath}/${environment}/hiera/global.${confType} ] ; then
-    :
-else
-    ln -sf /vagrant/hiera/global.${confType} ${environmentPath}/${environment}/hiera/global.${confType}
-fi
-
-if [ -e  ${environmentPath}/${environment}/hiera/datagroup/${moduleName}.${confType} ] ; then
-    :
-else
-    mkdir -p ${environmentPath}/${environment}/hiera/datagroup
-    ln -sf /vagrant/hiera/datagroup/${environment}.${confType} ${environmentPath}/${environment}/hiera/datagroup/${moduleName}.${confType}
-fi
-
-echo "Module: ${moduleName}"
-
-mkdir -p ${vagrantHome}/modules
-
-modLink="${vagrantHome}/modules/${moduleName}"
-
-if [ -e ${modLink} ] ; then
-    :
-else
-    ln -s /vagrant ${modLink}
-fi
 
 factDir='/etc/facter/facts.d'
 factFile='provision.yaml'
@@ -105,14 +59,6 @@ echo "provisioning with '${cmd}'"
 
 ${cmd}
 
-echo "done with provision node: ${nodeName} module: ${moduleName}"
-
-#echo "running spec tests"
-
-#cd /vagrant
-
-#bundle
-
-#bundle exec rake clean spec
+echo "done with provision node: ${nodeName}"
 
 echo "finished"
