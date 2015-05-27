@@ -15,8 +15,10 @@ boxes = [
     {
         :name => 'puppet',
         :memory => boxMemory,
-        :provisioner => 'linux_master.sh',
-        :provisionArgs => "-m #{app} -t #{confType} -e production" ,
+        #:provisioner => 'linux_master_manual.sh',
+        #:provisionArgs => "-m #{app} -t #{confType} -e production" ,
+        :provisioner => 'linux_master_puppet.sh',
+        :provisionArgs => "-m #{app} -t #{confType} -e production -r 'cdpuppet::role::puppetmaster'" ,
         :box => 'puppetlabs/centos-6.6-64-puppet',
     },
     {
