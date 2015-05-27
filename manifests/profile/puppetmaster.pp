@@ -5,6 +5,9 @@ class cdpuppet::profile::puppetmaster (
   $run_group = 'root',
 
 ){
+
+  # TODO add templates for r10k, hiera, and puppet configs.  Generate them from Hiera data  (Makes profile more generally useful)
+
   # removes an annoying yum warning that junks up logs
   Package { allow_virtual => true, }
 
