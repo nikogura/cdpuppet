@@ -1,4 +1,4 @@
 # cdpuppet::role::jenkins
 class cdpuppet::role::jenkins {
-  include cdpuppet::profile::jenkins
+  include cdpuppet::profile::jenkinsimpl
 }

@@ -7,7 +7,7 @@ VAGRANTFILE_API_VERSION = "2"
 require 'vagrant-hosts'
 require 'vagrant-auto_network'
 
-app="puppetjenkins"
+app="cdpuppet"
 confType="json"
 boxMemory=2048
 
@@ -15,8 +15,17 @@ boxes = [
     {
         :name => 'puppet',
         :memory => boxMemory,
-        :provisioner => 'linux_masterless.sh',
-        :provisionArgs => "-m #{app} -t #{confType} -e dev" ,
+        :provisioner => 'linux_master.sh',
+        :provisionArgs => "-m #{app} -t #{confType} -e production" ,
+        :box => 'puppetlabs/centos-6.6-64-puppet',
+    },
+    {
+        :name => 'jenkins',
+        :memory => boxMemory,
+        #:provisioner => 'linux_masterless.sh',
+        #:provisionArgs => "-m #{app} -t #{confType} -e production" ,
+        :provisioner => 'linux_agent.sh',
+        :provisionArgs => "-m #{app} -t #{confType} -e production -r 'cdpuppet::role::jenkins'",
         :box => 'puppetlabs/centos-6.6-64-puppet',
         :guestport => 8080,
         :hostport  => 8080,

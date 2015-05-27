@@ -1,5 +1,5 @@
-# cdpuppet::profile::jenkins
-class cdpuppet::profile::jenkins {
+# cdpuppet::profile::jenkinsimpl   Can't call it 'jenkins', as there's a 'jenkins' class inside it and it causes a collision
+class cdpuppet::profile::jenkinsimpl {
   $epel = 'epel'
   $rpmforge = 'rpmforge'
   $rpmforgeExtra = 'rpmforge-extras'
@@ -47,7 +47,7 @@ class cdpuppet::profile::jenkins {
   #include jenkins
 
   class { 'jenkins':
-    #configure_firewall => true,
+    configure_firewall => true,
     require => Package['git'],
   }
 

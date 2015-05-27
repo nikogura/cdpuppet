@@ -71,6 +71,7 @@ else
     ln -sf /vagrant/hiera/datagroup/${environment}.${confType} ${environmentPath}/${environment}/hiera/datagroup/${moduleName}.${confType}
 fi
 
+echo "Provisioning with linux_masterless.sh"
 echo "Module: ${moduleName}"
 
 mkdir -p ${vagrantHome}/modules
@@ -89,7 +90,7 @@ modulePath="${environmentPath}:/home/vagrant/modules:/vagrant/modules"
 puppet config set environmentpath ${environmentPath}
 puppet config set environment ${environment}
 
-cmd="puppet apply --modulepath ${modulePath} --detailed-exitcodes /vagrant/tests/${environment}.pp"
+cmd="puppet apply --modulepath ${modulePath} --detailed-exitcodes /vagrant/tests/${nodeName}.pp"
 
 echo "provisioning with '${cmd}'"
 

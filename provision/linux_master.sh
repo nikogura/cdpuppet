@@ -108,11 +108,15 @@ else
   rm -f ${puppetConfigDir}/puppet.conf
   ln -sf /vagrant/files/puppet.conf ${puppetConfigDir}/puppet.conf
 
-  ln -sf /vagrant/bin ${puppetConfigDir}/bin
+  mkdir -p ${puppetConfigDir}/bin
+
+  ln -sf /vagrant/files/deploy_environment.sh ${puppetConfigDir}/bin
+  ln -sf /vagrant/files/update_master.sh ${puppetConfigDir}/bin
+  ln -sf /vagrant/files/r10k_postrun.rb ${puppetConfigDir}/bin
 
   ln -sf /vagrant/files/hiera.yaml ${puppetConfigDir}/hiera.yaml
-  #ln -sf /vagrant/puppetdb.conf ${puppetConfigDir}/puppetdb.conf
-  #ln -sf /vagrant/routes.yaml ${puppetConfigDir}/routes.yaml
+  #ln -sf /vagrant/files/puppetdb.conf ${puppetConfigDir}/puppetdb.conf
+  #ln -sf /vagrant/files/routes.yaml ${puppetConfigDir}/routes.yaml
 
   ln -sf /vagrant/files/r10k.yaml /etc/r10k.yaml
   ln -sf /vagrant/Puppetfile /etc/puppet/Puppetfile
@@ -129,6 +133,13 @@ else
   # this shouldnt be necessary, but it seems to be
   cd ${puppetConfigDir}/environments/production
   r10k puppetfile install
+
+  # Crudely disable iptables
+  service iptables stop
+  chkconfig --del iptables
+
+  # Crudely get selinux out of the way
+  sed -i 's/SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
 
   echo 'Starting Puppet Master'
 
