@@ -4,24 +4,24 @@ class cdpuppet::profile::puppetmaster::cron (
 
 ){
   cron {'sync dev':
-    command => "${puppet_bin}/deploy_environment.sh} -e dev ",
+    command => "${puppet_bin}/deploy_environment.sh -e dev ",
     minute  => $sync_interval,
   }
 
   cron {'sync qa':
-    command => "${puppet_bin}/deploy_environment.sh} -e qa ",
+    command => "${puppet_bin}/deploy_environment.sh -e qa ",
     minute  => $sync_interval,
 
   }
 
   cron {'sync staging':
-    command => "${puppet_bin}/deploy_environment.sh} -e staging ",
+    command => "${puppet_bin}/deploy_environment.sh -e staging ",
     minute  => $sync_interval,
 
   }
 
   cron {'sync production':
-    command => "${puppet_bin}/deploy_environment.sh} -e production ",
+    command => "${puppet_bin}/deploy_environment.sh -e production ",
     minute  => $sync_interval,
   }
 
