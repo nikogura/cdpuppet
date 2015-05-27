@@ -26,9 +26,13 @@ done
 
 umask 0022
 
-r10k='/opt/puppet/bin/r10k'
-pe_dir='/etc/puppetlabs/puppet'
-env_dir="${pe_dir}/environments"
+#r10k='/opt/puppet/bin/r10k'
+#puppet_dir='/etc/puppetlabs/puppet'
+
+r10k='/usr/bin/r10k'
+puppet_dir='/etc/puppet'
+
+env_dir="${puppet_dir}/environments"
 
 ${r10k} deploy environment ${environment} -v
 
