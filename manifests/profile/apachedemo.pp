@@ -1,5 +1,8 @@
 # cdpuppet::profile::apachedemo
 class cdpuppet::profile::apachedemo {
+  # removes an annoying yum warning that junks up logs
+  Package { allow_virtual => true, }
+
   class {'apache':
     default_vhost => false,
 
