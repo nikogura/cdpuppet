@@ -56,7 +56,6 @@ class cdpuppet::profile::jenkinsimpl {
 
   jenkins::plugin { $plugins : }
 
-  /*
   firewall { '100 allow jenkins access':
     port   => [8080],
     proto  => tcp,
@@ -66,6 +65,5 @@ class cdpuppet::profile::jenkinsimpl {
   class { 'selinux':
     mode => 'permissive'
   }
-  */
 
 }

@@ -8,7 +8,7 @@ fixtures:
       repo: 'git@github.com:puppetlabs/puppetlabs-java.git'
       ref: '1.3.0'
 
-    puppetlabs-firewall:
+    firewall:
       repo: 'git@github.com:puppetlabs/puppetlabs-firewall.git'
       ref: '1.6.0'
 
