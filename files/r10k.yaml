@@ -1,0 +1,18 @@
+---
+# post processing
+postrun: ['/opt/puppet/bin/ruby', '/etc/puppet/bin/r10k_postrun.rb']
+
+sources:
+  dynamic:
+    remote: 'git@github.com:nikogura/control-repo.git'
+    basedir : '/etc/puppet/environments'
+
+ # foo:
+ #   remote: 'git@github.com:org/repo1.git'
+ #   basedir : '/etc/puppet/environments'
+ #   prefix : true
+ #   selflink : true
+ #   filter :
+ #     type : whitelist
+ #     list :
+ #       - master

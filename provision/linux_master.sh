@@ -46,7 +46,7 @@ hiera_config="${puppetConfigDir}/hiera.yaml"
 if [ -e  ${hiera_config} ] ; then
     :
 else
-    ln -s /vagrant/hiera.yaml "${puppetConfigDir}/hiera.yaml"
+    ln -s /vagrant/files/hiera.yaml "${puppetConfigDir}/hiera.yaml"
 fi
 
 if [ -L /etc/hiera.yaml ] ; then
@@ -106,21 +106,21 @@ else
   # config files
 
   rm -f ${puppetConfigDir}/puppet.conf
-  ln -sf /vagrant/puppet.conf ${puppetConfigDir}/puppet.conf
+  ln -sf /vagrant/files/puppet.conf ${puppetConfigDir}/puppet.conf
 
   ln -sf /vagrant/bin ${puppetConfigDir}/bin
 
-  ln -sf /vagrant/hiera.yaml ${puppetConfigDir}/hiera.yaml
+  ln -sf /vagrant/files/hiera.yaml ${puppetConfigDir}/hiera.yaml
   #ln -sf /vagrant/puppetdb.conf ${puppetConfigDir}/puppetdb.conf
   #ln -sf /vagrant/routes.yaml ${puppetConfigDir}/routes.yaml
 
-  ln -sf /vagrant/r10k.yaml /etc/r10k.yaml
+  ln -sf /vagrant/files/r10k.yaml /etc/r10k.yaml
   ln -sf /vagrant/Puppetfile /etc/puppet/Puppetfile
 
   rm /etc/hiera.yaml
   ln -sf /etc/puppet/hiera.yaml /etc/hiera.yaml
 
-  ln -sf /vagrant /home/vagrant/modules/pmaster
+  ln -sf /vagrant /home/vagrant/modules/cdpuppet
 
   echo 'Populating Envrionments'
 

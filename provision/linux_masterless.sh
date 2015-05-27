@@ -46,7 +46,7 @@ hiera_config="${puppetConfigDir}/hiera.yaml"
 if [ -e  ${hiera_config} ] ; then
     :
 else
-    ln -sf /vagrant/hiera.yaml "${puppetConfigDir}/hiera.yaml"
+    ln -sf /vagrant/files/hiera.yaml "${puppetConfigDir}/hiera.yaml"
 fi
 
 if [ -L /etc/hiera.yaml ] ; then
