@@ -7,24 +7,23 @@ while [ $# -ge 1 ]; do
             shift
             break
             ;;
-        -n)
-            nodeName="$2"
-            shift
-            ;;
         -e)
             environment="$2"
-            shift
-            ;;
-        -t)
-            confType="$2"
             shift
             ;;
         -r)
             role="$2"
             shift
             ;;
+        -b)
+            bootstrapDir="$2"
+            shift
+            ;;
         -h)
-            echo "Help Message Here"
+            echo "bash $0 -e <environment> -r <role> -b <bootstrap dir> "
+            echo "    -e <environment>  Environment for this box"
+            echo "    -r <role>  Role for this box"
+            echo "    -b <bootstrap dir>  Directory for bootstrap code.  Typically it's the repo clone where you got this script from."
             exit 0
             ;;
     esac
@@ -34,6 +33,11 @@ while [ $# -ge 1 ]; do
 done
 
 puppet_home="/etc/puppet"
+
+if [ -z "${bootstrapDir}" ]; then
+    echo "Script requires a bootstrap directory.  Set with -b <dir>.  Usually this is the directory where this code resides."
+    exit 1
+fi
 
 if ls /etc/init.d/puppetmaster > /dev/null 2>&1; then
   echo 'Puppet Already Installed. Syncing Environments.'
@@ -61,9 +65,9 @@ else
   #gem install system_timer
 
   # have to get these into place manually before running puppet
-  cp /vagrant/files/conf/r10k.yaml /etc/r10k.yaml
-  cp /vagrant/files/conf/puppet.conf /etc/puppet/puppet.conf
-  cp /vagrant/files/conf/hiera.yaml /etc/puppet/hiera.yaml
+  cp ${bootstrapDir}/files/conf/r10k.yaml /etc/r10k.yaml
+  cp ${bootstrapDir}/files/conf/puppet.conf /etc/puppet/puppet.conf
+  cp ${bootstrapDir}/files/conf/hiera.yaml /etc/puppet/hiera.yaml
 
   echo 'Populating Envrionments'
 
