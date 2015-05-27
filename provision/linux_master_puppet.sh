@@ -37,10 +37,14 @@ while [ $# -ge 1 ]; do
 
 done
 
+puppetConfigDir="/etc/puppet"
+
 if ls /etc/init.d/puppetmaster > /dev/null 2>&1; then
   echo 'Puppet Already Installed. Syncing Environments.'
 
   ln -sf /vagrant/files/r10k.yaml /etc/r10k.yaml
+
+  ln -sf /vagrant/files/puppet.conf /etc/puppet/puppet.conf
 
   r10k deploy environment -v
 
@@ -64,6 +68,9 @@ else
   gem install r10k
 
   ln -sf /vagrant/files/r10k.yaml /etc/r10k.yaml
+
+  rm ${puppetConfigDir}/puppet.conf
+  ln -sf /vagrant/files/puppet.conf /etc/puppet/puppet.conf
 
   echo 'Populating Envrionments'
 
