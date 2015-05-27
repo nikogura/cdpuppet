@@ -6,7 +6,8 @@ class cdpuppet::profile::puppetmaster (
 
 ){
 
-  # TODO add templates for r10k, hiera, and puppet configs.  Generate them from Hiera data  (Makes profile more generally useful)
+  # TODO add templates for r10k, hiera, and puppet configs.  Generate them from Hiera data  All you should have to do is clone this repo, fill your CR with
+  # your data, and run the initial provision script.  The rest should *just work* and maintain it's own state.
 
   # removes an annoying yum warning that junks up logs
   Package { allow_virtual => true, }
