@@ -51,7 +51,7 @@ class cdpuppet::profile::puppetmaster (
   file {'/etc/r10k.yaml':
     ensure  => present,
     mode    => 0644,
-    content => "puppet:///modules/cdpuppet/r10k.yaml",
+    source  => "puppet:///modules/cdpuppet/r10k.yaml",
     owner   => $run_user,
     group   => $run_group,
   }
@@ -125,7 +125,7 @@ class cdpuppet::profile::puppetmaster (
     file {"$target_dir/$name":
       ensure  => present,
       mode    => $mode,
-      content => "puppet:///modules/cdpuppet/${name}",
+      source  => "puppet:///modules/cdpuppet/${name}",
       owner   => $run_user,
       group   => $run_group,
       require => File[$target_dir],
