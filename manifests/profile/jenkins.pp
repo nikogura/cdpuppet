@@ -1,5 +1,5 @@
-# puppetjenkins::profile::default
-class puppetjenkins::profile::default {
+# cdpuppet::profile::jenkins
+class cdpuppet::profile::jenkins {
   $epel = 'epel'
   $rpmforge = 'rpmforge'
   $rpmforgeExtra = 'rpmforge-extras'
@@ -47,7 +47,7 @@ class puppetjenkins::profile::default {
   #include jenkins
 
   class { 'jenkins':
-    configure_firewall => true,
+    #configure_firewall => true,
     require => Package['git'],
   }
 

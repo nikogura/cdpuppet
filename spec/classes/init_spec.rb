@@ -1,7 +1,7 @@
 require 'spec_helper'
-describe 'puppetjenkins' do
+describe 'cdpuppet' do
 
   context 'with defaults for all parameters' do
-    it { should contain_class('puppetjenkins') }
+    it { should contain_class('cdpuppet') }
   end
 end

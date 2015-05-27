@@ -1,3 +1,3 @@
-# puppetjenkins
-class puppetjenkins {
+# cdpuppet
+class cdpuppet {
 }

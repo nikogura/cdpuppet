@@ -8,8 +8,16 @@ fixtures:
       repo: 'git@github.com:puppetlabs/puppetlabs-java.git'
       ref: '1.3.0'
 
+    puppetlabs-firewall:
+      repo: 'git@github.com:puppetlabs/puppetlabs-firewall.git'
+      ref: '1.6.0'
+
+    selinux:
+      repo: 'git@github.com:spiette/puppet-selinux.git'
+      ref: 'v0.5.3'
+
   forge_modules:
     network: "razorsedge/network"
     stdlib: "puppetlabs/stdlib"
   symlinks:
-    puppetjenkins: "#{source_dir}"
+    cdpuppet: "#{source_dir}"

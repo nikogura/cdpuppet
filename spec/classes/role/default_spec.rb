@@ -1,5 +1,5 @@
 require 'spec_helper'
-describe 'puppetjenkins::role::default' do
+describe 'cdpuppet::role::jenkins' do
   let(:facts) {
     {
         :osfamily => 'RedHat',
@@ -9,6 +9,6 @@ describe 'puppetjenkins::role::default' do
   }
 
   context 'with defaults for all parameters' do
-    it { should contain_class('puppetjenkins::role::default') }
+    it { should contain_class('cdpuppet::role::jenkins') }
   end
 end

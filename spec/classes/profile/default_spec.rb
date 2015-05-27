@@ -1,5 +1,5 @@
 require 'spec_helper'
-describe 'puppetjenkins::profile::default' do
+describe 'cdpuppet::profile::jenkins' do
   let(:facts) {
     {
         :osfamily => 'RedHat',
@@ -9,7 +9,7 @@ describe 'puppetjenkins::profile::default' do
   }
 
   context 'with defaults for all parameters' do
-    it { should contain_class('puppetjenkins::profile::default') }
+    it { should contain_class('cdpuppet::profile::jenkins') }
     it { should contain_yumrepo('epel').with({'baseurl' => 'http://download.fedoraproject.org/pub/epel/6/x86_64'})}
   end
 end

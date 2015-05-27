@@ -1,8 +1,8 @@
 {
-  "name": "puppetjenkins",
+  "name": "cdpuppet",
   "version": "0.1.0",
   "author": "nik.ogura@gmail.com",
-  "summary": "Just enough Puppet code to create a Jenkins instance that can sync itself to and from VCS",
+  "summary": "Roles and Profiles implementing Continuous Delivery with Puppet and R10K",
   "license": "Apache-2.0",
   "source": "https://github.com/nikogura/puppetjenkins",
   "project_page": "https://github.com/nikogura/puppetjenkins",

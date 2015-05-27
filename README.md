@@ -1,4 +1,4 @@
-# puppetjenkins
+# cdpuppet
 
-A Puppet managed Jenkins installation for demonstrating Continuous Delivery
+Roles and Profiles for implementing Continuous Delivery with Puppet and R10K
 
