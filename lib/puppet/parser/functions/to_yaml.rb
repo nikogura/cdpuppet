@@ -5,7 +5,7 @@ module Puppet::Parser::Functions
 
     data = args[0]
 
-    return YAML.to_yaml(data)
+    return YAML.to_yaml(data).to_s
 
   end
 end
