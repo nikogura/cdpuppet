@@ -92,7 +92,7 @@ class cdpuppet::profile::puppetmaster (
     file {"${puppet_home}/puppet.conf":
       ensure  => present,
       mode    => 0644,
-      content => to_ini($puppet_data),
+      content => template("${module_name}/puppet_conf.erb"),
       owner   => $run_user,
       group   => $run_group,
     }
