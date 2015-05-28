@@ -5,7 +5,7 @@ module Puppet::Parser::Functions
 
     data = args[0]
 
-    return JSON.generate(data).to_s
+    return JSON.generate(data)
 
   end
 end
