@@ -3,11 +3,11 @@ class cdpuppet::profile::puppetmaster (
   $puppet_home = '/etc/puppet',
   $run_user = 'root',
   $run_group = 'root',
+  $r10k_data = undef,   # optionally configure r10k from hiera
+  $hiera_data = undef,  # optionally configure hiera from hiera
+  $puppet_data = undef, # optionally configure puppet from hiera
 
 ){
-
-  # TODO add templates for r10k, hiera, and puppet configs.  Generate them from Hiera data  All you should have to do is clone this repo, fill your CR with
-  # your data, and run the initial provision script.  The rest should *just work* and maintain it's own state.
 
   # removes an annoying yum warning that junks up logs
   Package { allow_virtual => true, }
@@ -18,11 +18,6 @@ class cdpuppet::profile::puppetmaster (
     'deploy_environment.sh',
     'update_master.sh',
     'r10k_postrun.rb',
-  ]
-
-  $puppet_confs = [
-    'hiera.yaml',
-    'puppet.conf',
   ]
 
   file {$puppet_home:
@@ -40,12 +35,48 @@ class cdpuppet::profile::puppetmaster (
 
   }
 
-  file {'/etc/r10k.yaml':
-    ensure  => present,
-    mode    => 0644,
-    source  => "puppet:///modules/cdpuppet/conf/r10k.yaml",
-    owner   => $run_user,
-    group   => $run_group,
+  # r10k config
+
+  if ($r10k_data) {
+    file {'/etc/r10k.yaml':
+      ensure  => present,
+      mode    => 0644,
+      content => to_yaml($r10k_data),
+      owner   => $run_user,
+      group   => $run_group,
+    }
+
+  } else {
+    file {'/etc/r10k.yaml':
+      ensure  => present,
+      mode    => 0644,
+      source  => "puppet:///modules/cdpuppet/conf/r10k.yaml",
+      owner   => $run_user,
+      group   => $run_group,
+    }
+
+  }
+
+  # Hiera config
+
+  if ($hiera_data) {
+    file {"${puppet_home}/hiera.yaml":
+      ensure  => present,
+      mode    => 0644,
+      content => to_yaml($hiera_data),
+      owner   => $run_user,
+      group   => $run_group,
+    }
+
+  } else {
+    file {"${puppet_home}/hiera.yaml":
+      ensure  => present,
+      mode    => 0644,
+      source  => "puppet:///modules/cdpuppet/conf/hiera.yaml",
+      owner   => $run_user,
+      group   => $run_group,
+    }
+
   }
 
   file {'/etc/hiera.yaml':
@@ -55,18 +86,34 @@ class cdpuppet::profile::puppetmaster (
 
   }
 
+  # Puppet Config
+
+  if ($puppet_data) {
+    file {"${puppet_home}/puppet.conf":
+      ensure  => present,
+      mode    => 0644,
+      content => to_ini($puppet_data),
+      owner   => $run_user,
+      group   => $run_group,
+    }
+
+  } else {
+    file {"${puppet_home}/puppet.conf":
+      ensure  => present,
+      mode    => 0644,
+      source  => "puppet:///modules/cdpuppet/conf/puppet.conf",
+      owner   => $run_user,
+      group   => $run_group,
+    }
+
+  }
+
   cdpuppet::file {$scripts:
     target_dir => $puppet_bin,
     run_user   => $run_user,
     run_group  => $run_group,
     mode       => 0755,
     type       => 'script',
-  }
-
-  cdpuppet::file {$puppet_confs:
-    target_dir => $puppet_home,
-    type => 'conf',
-
   }
 
   firewall { '100 allow puppet agent access':
