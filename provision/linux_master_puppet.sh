@@ -34,9 +34,13 @@ done
 
 puppet_home="/etc/puppet"
 
+# figure out the bootstrap directory, and fail if we cannot.
 if [ -z "${bootstrapDir}" ]; then
+  bootstrapDir=$(echo $( cd $(dirname $0) ; pwd -P ) | sed 's/\/provision//')
+  if [ -z "${bootstrapDir}" ]; then
     echo "Script requires a bootstrap directory.  Set with -b <dir>.  Usually this is the directory where this code resides."
     exit 1
+  fi
 fi
 
 if ls /etc/init.d/puppetmaster > /dev/null 2>&1; then
