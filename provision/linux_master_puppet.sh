@@ -20,6 +20,10 @@ while [ $# -ge 1 ]; do
             shift
             ;;
         -h)
+            puppet_home="$2"
+            shift
+            ;;
+        -h)
             echo "bash $0 -e <environment> -r <role> -b <bootstrap dir> "
             echo "    -e <environment>  Environment for this box"
             echo "    -r <role>  Role for this box"
@@ -32,7 +36,9 @@ while [ $# -ge 1 ]; do
 
 done
 
-puppet_home="/etc/puppet"
+if [ -z "${puppet_home}" ]; then
+    puppet_home="/etc/puppet"
+fi
 
 # figure out the bootstrap directory, and fail if we cannot.
 if [ -z "${bootstrapDir}" ]; then
@@ -70,8 +76,8 @@ else
 
   # have to get these into place manually before running puppet
   cp ${bootstrapDir}/files/conf/r10k.yaml /etc/r10k.yaml
-  cp ${bootstrapDir}/files/conf/puppet.conf /etc/puppet/puppet.conf
-  cp ${bootstrapDir}/files/conf/hiera.yaml /etc/puppet/hiera.yaml
+  cp ${bootstrapDir}/files/conf/puppet.conf ${puppet_home}/puppet.conf
+  cp ${bootstrapDir}/files/conf/hiera.yaml ${puppet_home}/hiera.yaml
 
   echo 'Populating Envrionments'
 

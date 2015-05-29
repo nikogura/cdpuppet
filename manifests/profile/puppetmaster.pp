@@ -20,6 +20,9 @@ class cdpuppet::profile::puppetmaster (
     'r10k_postrun.rb',
   ]
 
+  $r10k = '/etc/r10k.yaml'
+  $hiera = '/etc/hiera.yaml'
+
   file {$puppet_home:
     ensure => directory,
   }
@@ -38,7 +41,7 @@ class cdpuppet::profile::puppetmaster (
   # r10k config
 
   if ($r10k_data) {
-    file {'/etc/r10k.yaml':
+    file {$r10k:
       ensure  => present,
       mode    => 0644,
       content => to_yaml($r10k_data),
@@ -47,7 +50,7 @@ class cdpuppet::profile::puppetmaster (
     }
 
   } else {
-    file {'/etc/r10k.yaml':
+    file {$r10k:
       ensure  => present,
       mode    => 0644,
       source  => "puppet:///modules/cdpuppet/conf/r10k.yaml",
@@ -79,7 +82,7 @@ class cdpuppet::profile::puppetmaster (
 
   }
 
-  file {'/etc/hiera.yaml':
+  file {$hiera:
     ensure  => link,
     target  => "$puppet_home/hiera.yaml",
     require => File["$puppet_home/hiera.yaml"],
