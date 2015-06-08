@@ -151,7 +151,7 @@ class cdpuppet::profile::puppetmaster (
   if ($puppetdb_data) {
     cdpuppet::hierafile {'puppetdb.conf':
       target_dir => $puppet_home,
-      template   => 'puppet_conf.erb',
+      template   => 'puppetdb_conf.erb',
       run_user   => $run_user,
       run_group  => $run_group,
     }
