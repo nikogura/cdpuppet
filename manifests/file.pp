@@ -1,3 +1,4 @@
+# write a file sourced in this modules files dir
 define cdpuppet::file (
   $target_dir,
   $type,

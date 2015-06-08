@@ -3,9 +3,16 @@ class cdpuppet::profile::puppetmaster (
   $puppet_home = '/etc/puppet',
   $run_user = 'root',
   $run_group = 'root',
-  $r10k_data = undef,   # optionally configure r10k from hiera
-  $hiera_data = undef,  # optionally configure hiera from hiera
-  $puppet_data = undef, # optionally configure puppet from hiera
+  $r10k_data = undef,       # optionally configure r10k from hiera
+  $hiera_data = undef,      # optionally configure hiera from hiera
+  $puppet_data = undef,     # optionally configure puppet from hiera
+  $auth_data = undef,       # optionally configure auth from hiera
+  $autosign_data = undef,   # optionally configure autosigning from hiera
+  $fileserver_data = undef, # optionally configure fileserver from hiera
+  $routes_data = undef,     # optionally configure routes from hiera
+  $tagmail_data = undef,    # optionally configure tagmail from hiera
+  $puppetdb_data = undef,   # optionally configure puppetdb from hiera
+
 
 ){
 
@@ -92,25 +99,85 @@ class cdpuppet::profile::puppetmaster (
   # Puppet Config
 
   if ($puppet_data) {
-    file {"${puppet_home}/puppet.conf":
-      ensure  => present,
-      mode    => 0644,
-      content => template("${module_name}/puppet_conf.erb"),
-      owner   => $run_user,
-      group   => $run_group,
+    cdpuppet::hierafile {'puppet.conf':
+      target_dir => $puppet_home,
+      template   => 'puppet_conf.erb',
+      run_user   => $run_user,
+      run_group  => $run_group,
     }
 
   } else {
-    file {"${puppet_home}/puppet.conf":
-      ensure  => present,
-      mode    => 0644,
-      source  => "puppet:///modules/cdpuppet/conf/puppet.conf",
-      owner   => $run_user,
-      group   => $run_group,
+    cdpuppet::file {'puppet.conf':
+      target_dir => $puppet_home,
+      run_user   => $run_user,
+      run_group  => $run_group,
+      mode       => 0755,
+      type       => 'conf',
     }
 
   }
 
+  # auth.conf
+  if ($auth_data) {
+    cdpuppet::hierafile {'auth.conf':
+      target_dir => $puppet_home,
+      template   => 'auth_conf.erb',
+      run_user   => $run_user,
+      run_group  => $run_group,
+    }
+  }
+
+  # autosign.conf
+  if ($autosign_data) {
+    cdpuppet::hierafile {'autosign.conf':
+      target_dir => $puppet_home,
+      template   => 'autosign_conf.erb',
+      run_user   => $run_user,
+      run_group  => $run_group,
+    }
+  }
+
+  # fileserver.conf
+  if ($fileserver_data) {
+    cdpuppet::hierafile {'fileserver.conf':
+      target_dir => $puppet_home,
+      template   => 'fileserver_conf.erb',
+      run_user   => $run_user,
+      run_group  => $run_group,
+    }
+  }
+
+  # puppetdb.conf
+  if ($puppetdb_data) {
+    cdpuppet::hierafile {'puppetdb.conf':
+      target_dir => $puppet_home,
+      template   => 'puppetdb_conf.erb',
+      run_user   => $run_user,
+      run_group  => $run_group,
+    }
+  }
+
+  # routes.yaml
+  if ($routes_data) {
+    cdpuppet::hierafile {'routes.conf':
+      target_dir => $puppet_home,
+      template   => 'routes_conf.erb',
+      run_user   => $run_user,
+      run_group  => $run_group,
+    }
+  }
+
+  # tagmail.conf
+  if ($tagmail_data) {
+    cdpuppet::hierafile {'tagmail.conf':
+      target_dir => $puppet_home,
+      template   => 'tagmail_conf.erb',
+      run_user   => $run_user,
+      run_group  => $run_group,
+    }
+  }
+
+  # server side scripts
   cdpuppet::file {$scripts:
     target_dir => $puppet_bin,
     run_user   => $run_user,
@@ -118,6 +185,8 @@ class cdpuppet::profile::puppetmaster (
     mode       => 0755,
     type       => 'script',
   }
+
+  #network and security stuff (Because iptables and selinux are blocking things by default)
 
   firewall { '100 allow puppet agent access':
     port   => [8140],
