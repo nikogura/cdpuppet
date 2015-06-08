@@ -159,11 +159,12 @@ class cdpuppet::profile::puppetmaster (
 
   # routes.yaml
   if ($routes_data) {
-    cdpuppet::hierafile {'routes.conf':
-      target_dir => $puppet_home,
-      template   => 'routes_conf.erb',
-      run_user   => $run_user,
-      run_group  => $run_group,
+    file {"${puppet_home}/routes.yaml":
+      ensure  => present,
+      mode    => 0644,
+      content => to_yaml($routes_data),
+      owner   => $run_user,
+      group   => $run_group,
     }
   }
 
