@@ -1,0 +1,6 @@
+<% @fileserver_data.each {|section, data| -%>
+[<%= section %>]
+  <% data.each {|key, value| -%>
+  <%= key %> <%= value %>
+  <% } %>
+<% } %>
