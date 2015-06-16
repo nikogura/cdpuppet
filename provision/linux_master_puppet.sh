@@ -69,9 +69,8 @@ else
   echo 'Installing Puppet Master.'
   yum --nogpgcheck -y install puppet-server
   yum --nogpgcheck -y install git
-  #yum --nogpgcheck -y install ruby193
 
-  gem install r10k
+  gem install r10k -v 1.5.1
   #gem install system_timer
 
   # have to get these into place manually before running puppet
@@ -90,13 +89,17 @@ else
   echo 'Provisioning Myself'
   echo "Role: ${role}"
 
-  cmd="puppet apply --detailed-exitcodes -e "
+  cmd="puppet apply --confdir ${puppet_home} --detailed-exitcodes -e "
 
   ${cmd} "include ${role}"
 
   echo 'Starting Puppet Master'
 
   service puppetmaster start
+
+  #puppet resource --confdir ${puppet_home} service puppetdb ensure=running enable=true
+
+  #puppet resource --confdir ${puppet_home} service puppetmaster ensure=running enable=true
 
 fi
 
