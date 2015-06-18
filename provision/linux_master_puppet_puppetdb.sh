@@ -67,11 +67,10 @@ if ls /etc/init.d/puppetmaster > /dev/null 2>&1; then
 
 else
   echo 'Installing Puppet Master.'
-  yum --nogpgcheck -y install puppet-server
+  yum --nogpgcheck -y install puppet-server puppetdb puppetdb-terminus
   yum --nogpgcheck -y install git
 
-  gem install r10k -v 1.5.1
-  #gem install system_timer
+  gem install r10k -v
 
   # have to get these into place manually before running puppet
   cp ${bootstrapDir}/files/conf/r10k.yaml /etc/r10k.yaml
@@ -95,7 +94,26 @@ else
 
   echo 'Starting Puppet Master'
 
+  # gotta start the master service to gen the certs
   service puppetmaster start
+
+  echo 'setting up certs for puppetdb'
+  # setup puppetdb for ssl
+  puppetdb ssl-setup
+
+  echo 'setting puppet master and puppetdb to run at server start'
+  # finally ensure everything is set up
+  puppet resource --confdir ${puppet_home} service puppetdb ensure=running enable=true
+
+  puppet resource --confdir ${puppet_home} service puppetmaster ensure=running enable=true
+
+  # it doesn't seem to work without a bounce
+  echo 'bouncing puppetdb -- cos it never seems to work unless we do'
+  service puppetdb restart
+
+  echo 'waiting for puppetdb to come up'
+  # and it doesn't come up quickly
+  sleep 10
 
 fi
 

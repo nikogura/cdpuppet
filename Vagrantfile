@@ -26,7 +26,11 @@ boxes = [
         #:provisionArgs => "-t #{confType} -e production -r 'cdpuppet::role::puppetmaster'" ,
 
         # puppet master set up via puppet itself.  Synced to Control Repo via Cron
-        :provisioner => 'linux_master_puppet.sh',
+        #:provisioner => 'linux_master_puppet.sh',
+        #:provisionArgs => "-e production -r 'cdpuppet::role::puppetmaster::cron' -b /vagrant" ,
+
+        # puppet master with PuppetDB set up via puppet itself.  Synced to Control Repo via Cron
+        :provisioner => 'linux_master_puppet_puppetdb.sh',
         :provisionArgs => "-e production -r 'cdpuppet::role::puppetmaster::cron' -b /vagrant" ,
 
         # puppet master set up via puppet itself.  Synced to Control Repo via Jenkins
