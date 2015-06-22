@@ -79,7 +79,7 @@ else
 
   echo 'Populating Envrionments'
 
-  r10k deploy environment -v
+  r10k deploy environment -v 1.5.1
 
   # this shouldnt be necessary, but it seems to be
   cd ${puppet_home}/environments/production
