@@ -70,7 +70,7 @@ else
   yum --nogpgcheck -y install puppet-server puppetdb puppetdb-terminus
   yum --nogpgcheck -y install git
 
-  gem install r10k -v
+  gem install r10k -v 1.5.1
 
   # have to get these into place manually before running puppet
   cp ${bootstrapDir}/files/conf/r10k.yaml /etc/r10k.yaml
@@ -79,7 +79,7 @@ else
 
   echo 'Populating Envrionments'
 
-  r10k deploy environment -v 1.5.1
+  r10k deploy environment -v
 
   # this shouldnt be necessary, but it seems to be
   cd ${puppet_home}/environments/production
