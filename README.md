@@ -79,7 +79,7 @@ Here's an example of JSON Hiera data:
         "global"
       ],
       ":json": {
-        ":datadir": "/etc/puppet/enviornments/%{::environment}/hiera"
+        ":datadir": "/etc/puppet/environments/%\\{::environment\\}/hiera"
       }
     },
     "cdpuppet::profile::puppetmaster::r10k_data": {
