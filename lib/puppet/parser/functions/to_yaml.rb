@@ -5,7 +5,7 @@ module Puppet::Parser::Functions
 
     data = args[0]
 
-    return data.to_yaml.gsub(/":(\w+)"/, ":"+'\1')
+    return data.to_yaml.gsub(/":(\w+)"/, ":"+'\1').gsub(/>>/, '}').gsub(/<</,'%{')
 
 
   end

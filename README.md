@@ -38,6 +38,8 @@ have in mind for your Puppetmaster.  I can hardly blame you.
 
 Gotcha:  Hiera configs contain keys that look like ruby symbols.  This means that Puppet (which is written in ruby) is going to bork when it tries to write hiera.yaml from a yaml datasource.  To make this work, you've got to keep your puppet data in JSON.  If it's in syntactically proper JSON, it works great.  If you try do it from YAML, it doesn't work so well.  So, even if your main hiera data is YAML, I recommend you keep the puppetmaster data in JSON.
 
+Likewise, %{::environment} gets replaced by the current environment when puppet runs, so use the format <<::name>> to inject puppet variables into hiera.yaml.  The to_yaml funciton will turn <<::environment>> into %{::environment} when it creates the file.
+
 The class cdpuppet::profile::puppetmaster accepts a number of parameters that will customize CDPuppet's behavior for you.
 
 * puppet_home   ($confdir, usually /etc/puppet or /etc/puppetlabs/puppet)  The central puppet config directory.  Defaults to '/etc/puppet'.
@@ -79,7 +81,7 @@ Here's an example of JSON Hiera data:
         "global"
       ],
       ":json": {
-        ":datadir": "/etc/puppet/environments/%\\{::environment\\}/hiera"
+        ":datadir": "/etc/puppet/environments/<<::environment>>/hiera"
       }
     },
     "cdpuppet::profile::puppetmaster::r10k_data": {
