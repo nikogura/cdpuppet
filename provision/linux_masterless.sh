@@ -24,8 +24,8 @@ while [ $# -ge 1 ]; do
             shift
             ;;
         -h)
-            echo "Help Message Here"
-            exit 0
+            puppet_home="$2"
+            shift
             ;;
     esac
 
@@ -33,15 +33,18 @@ while [ $# -ge 1 ]; do
 
 done
 
+if [ -z "${puppet_home}" ]; then
+    puppet_home="/etc/puppet"
+fi
+
 # some global variables
-puppet_home="/etc/puppet"
 environmentPath="${puppet_home}/environments"
 vagrantHome="/home/vagrant"
 
 # hiera configs
 mkdir -p ${environmentPath}/${environment}/hiera
 
-hiera_config="${puppetConfigDir}/hiera.yaml"
+hiera_config="${puppet_home}/hiera.yaml"
 
 ln -sf /vagrant/files/conf/hiera.yaml "${puppet_home}/hiera.yaml"
 

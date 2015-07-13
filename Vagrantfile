@@ -15,7 +15,7 @@ boxes = [
     {
         :name => 'puppet',
         :memory => boxMemory,
-        :box => 'puppetlabs/centos-6.6-64-puppet',
+        :box => 'puppetlabs/centos-7.0-64-puppet',
 
         # crude manually setup puppet master.  Crude, but effective.
         #:provisioner => 'linux_master_manual.sh',
@@ -37,17 +37,17 @@ boxes = [
         #:provisioner => 'linux_master_puppet.sh',
         #:provisionArgs => "-e production -r 'cdpuppet::role::puppetmaster::jenkins'" ,
     },
-    {
-        :name => 'jenkins',
-        :memory => boxMemory,
-        #:provisioner => 'linux_masterless.sh',
-        #:provisionArgs => "-m #{app} -t #{confType} -e production" ,
-        :provisioner => 'linux_agent.sh',
-        :provisionArgs => "-e production -r 'cdpuppet::role::jenkins'",
-        :box => 'puppetlabs/centos-6.6-64-puppet',
-        :guestport => 8080,
-        :hostport  => 8080,
-    },
+#    {
+#        :name => 'jenkins',
+#        :memory => boxMemory,
+#        #:provisioner => 'linux_masterless.sh',
+#        #:provisionArgs => "-m #{app} -t #{confType} -e production" ,
+#        :provisioner => 'linux_agent.sh',
+#        :provisionArgs => "-e production -r 'cdpuppet::role::jenkins'",
+#        :box => 'puppetlabs/centos-6.6-64-puppet',
+#        :guestport => 8080,
+#        :hostport  => 8080,
+#    },
     {
         :name => 'agent1',
         :memory => boxMemory,
@@ -55,7 +55,7 @@ boxes = [
         #:provisionArgs => "-m #{app} -t #{confType} -e production" ,
         :provisioner => 'linux_agent.sh',
         :provisionArgs => "-e production -r 'cdpuppet::role::apachedemo'",
-        :box => 'puppetlabs/centos-6.6-64-puppet',
+        :box => 'puppetlabs/centos-7.0-64-puppet',
         :guestport => 80,
         :hostport  => 8081,
     },

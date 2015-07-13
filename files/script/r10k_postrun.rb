@@ -8,6 +8,7 @@ configFile = 'r10k.yaml'
 defaultFile = "/etc/#{configFile}"
 envDir = 'environments'
 
+## Filter
 #directories we're going to nuke
 deadList = []
 
@@ -87,8 +88,10 @@ end
 #remove the directory
 FileUtils.rm_rf(deadList)
 
-#create symlinks to each module's own manifests dir for autoloading
+## end filter
 
+## SelfLink
+#create symlinks to each module's own manifests dir for autoloading if one of our sources is a straight up module repo
 Dir.chdir(env_dir)
 
 config['sources'].each do |src|
@@ -127,3 +130,50 @@ config['sources'].each do |src|
   end
 
 end
+
+## end SelfLink
+
+## Puppet in Subdir
+#cope with puppet source in a subdir
+config['sources'].each do |src|
+    #iterate over module branches
+    Dir.entries("./").select {|name| name !~/^\./}.each do |branch_dir|
+      Dir.chdir(branch_dir)
+
+      if (Dir.exists?('modules'))
+        Dir.chdir('modules')
+
+        # for each dir under modules (which is itself a module)
+        Dir.entries("./").select {|submod| submod !~/^\./}.each do |submod|
+
+          Dir.chdir(submod)
+          Dir.entries("./").select {|dirname| dirname !~/^\./}.each do |dir|
+
+            #detect if it has puppet components in a subdir
+            if (dir =~ /puppet/)  #heck, if it has a subdir with 'puppet' in the name, that's good enough
+
+              # link stuff in the puppet subdir into the main dir
+              Dir.entries(dir).select {|fileName| fileName !~/^\./}.each do |file|
+
+                # except leave it the heck alone if something is already there by that name
+                unless (File.exists?(file))
+                  FileUtils.ln_s("#{dir}/#{file}", file)
+                end
+
+              end
+
+            end
+
+          end
+          Dir.chdir("..")
+
+        end
+        Dir.chdir("..")
+
+      end
+      Dir.chdir("..")
+
+    end
+end
+
+## End Puppet Subdir
